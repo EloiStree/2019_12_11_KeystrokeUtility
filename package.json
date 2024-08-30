@@ -6,6 +6,6 @@
   "description": "You package description",                         
   "keywords": ["Script","Tool"],                       
   "category": "Script",                   
-  "dependencies":{"be.eloistree.license":"0.0.1"}   
+  "dependencies":{}   
  
 } 

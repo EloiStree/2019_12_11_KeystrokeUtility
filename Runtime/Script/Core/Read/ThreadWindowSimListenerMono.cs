@@ -6,6 +6,7 @@ using System.Linq;
 using WindowsInput.Native;
 using System.Threading;
 using WindowsInput;
+using UnityEngine.Events;
 
 public class ThreadWindowSimListenerMono : KeyboardReadMono, IKeyboardRead
 {
@@ -66,7 +67,10 @@ public class ThreadWindowSimListenerMono : KeyboardReadMono, IKeyboardRead
 
 
     public object m_readKeyLocker = new object();
+    public Action<KeyboardTouch, bool> m_onKeyboardPressChangedThreaded;
 
+
+   
     private void CheckWindowState()
     {
         lock (m_readKeyLocker) { 
@@ -80,7 +84,7 @@ public class ThreadWindowSimListenerMono : KeyboardReadMono, IKeyboardRead
         
             while (m_threadLink.m_killWhenPossible == false) {
          
-                            m_winKey.Clear();
+                m_winKey.Clear();
                 for (int i = 0; i < vkList.Count; i++)
                 {
 
@@ -95,10 +99,11 @@ public class ThreadWindowSimListenerMono : KeyboardReadMono, IKeyboardRead
                                 m_winKey.Add(vkList[i]);
                        
                             m_touchHistory.SetState(kts[j],value);
-                        
+                            if (m_onKeyboardPressChangedThreaded != null) { 
+                                m_onKeyboardPressChangedThreaded(kts[j], value);
+                            }
                         }
                     }
-
                 }
                 now = DateTime.Now;
                 float dt = (float)(now - lastCheck).TotalSeconds;
@@ -194,6 +199,19 @@ public class ThreadWindowSimListenerMono : KeyboardReadMono, IKeyboardRead
 }
 
 
+[System.Serializable]
+public class WindowKeyboardEvent : UnityEvent<WindowKeybaordChangeHappened> { }
+
+
+
+[System.Serializable]
+public struct WindowKeybaordChangeHappened
+{
+
+    public VirtualKeyCode m_virtualKey;
+    public KeyboardTouch m_touch;
+    public long m_utcTimeNowTick;
+}
 
 
 [System.Serializable]
@@ -202,7 +220,7 @@ public class EnumBoolHistory<K> where K : struct, IConvertible
     public List<K> m_activeElements = new List<K>();
     public Dictionary<K, BoolHistory> m_elementStates = new Dictionary<K, BoolHistory>();
     public delegate void OnStateChange(K element, bool isOn);
-    public OnStateChange onStateChange;
+    public OnStateChange m_onStateChange;
 
     public EnumBoolHistory()
     {
@@ -225,15 +243,15 @@ public class EnumBoolHistory<K> where K : struct, IConvertible
         {
             m_activeElements.Add(element);
             m_elementStates[element].SetState( true);
-            if (onStateChange != null)
-                onStateChange(element, true);
+            if (m_onStateChange != null)
+                m_onStateChange(element, true);
         }
         else if (!value && m_elementStates[element].GetState() == true)
         {
             m_activeElements.Remove(element);
             m_elementStates[element].SetState(false);
-            if (onStateChange != null)
-                onStateChange(element, false);
+            if (m_onStateChange != null)
+                m_onStateChange(element, false);
         }
 
     }
