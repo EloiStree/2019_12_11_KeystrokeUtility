@@ -8,7 +8,6 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using UnityEngine.Events;
-using JetBrains.Annotations;
 
 public class ThreadWindowToVirtualkeyEventMono : MonoBehaviour
 {

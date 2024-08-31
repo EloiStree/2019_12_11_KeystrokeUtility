@@ -18,15 +18,16 @@ public class DebugThreadWindowSimListenerMono:MonoBehaviour
 
     void Update()
     {
-
-        m_touchKeyJoin = string.Join(", " ,m_threadListener.GetTouchActiveAsCopy());
-        m_windowKeyJoin = string.Join(", ", m_threadListener.GetWindowKeyAsCopy());
-
-    
-        m_onTouchKey.Invoke(m_touchKeyJoin);
-        m_onWindowKey.Invoke(m_windowKeyJoin);
-
-
-        
+        string touch = string.Join(", ", m_threadListener.GetTouchActiveAsCopy());
+        if (touch != m_touchKeyJoin) { 
+            m_touchKeyJoin = touch;
+            m_onTouchKey.Invoke(touch);
+        }
+        string window = string.Join(", ", m_threadListener.GetWindowKeyAsCopy());
+        if (window != m_windowKeyJoin)
+        {
+            m_windowKeyJoin = window;
+            m_onWindowKey.Invoke(window);
+        }
     }
 }
