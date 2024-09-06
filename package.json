@@ -1,11 +1,21 @@
 {                                                                                
-  "name": "be.eloistree.keystrokeutility",                              
+  "name": "be.elab.keystrokeutility",                              
   "displayName": "KeystrokeUtility",                        
   "version": "0.0.1",                         
   "unity": "2018.1",                             
   "description": "You package description",                         
   "keywords": ["Script","Tool"],                       
-  "category": "Script",                   
-  "dependencies":{}   
- 
+  "category": "Script",     
+ "samples": [
+    {
+      "displayName": "Demo Scene",
+      "description": "A sample scene that demonstrates the features of this package.",
+      "path": "Scene/Demo"
+    }
+  ],
+  "author": {
+    "name": "Eloi Stree",
+    "mail": "",
+    "url": "https://github.com/EloiStree/"
+  },  
 } 
