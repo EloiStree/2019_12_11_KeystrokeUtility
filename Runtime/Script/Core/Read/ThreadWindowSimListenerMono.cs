@@ -23,7 +23,9 @@ public class ThreadWindowSimListenerMono : KeyboardReadMono, IKeyboardRead
 
 
     public List<KeyboardTouch> GetTouchActive() { return m_touchActiveUnityThread; }
-    public List<VirtualKeyCode> GetWindowKey() { return m_winKeyUnityThread;  }
+    public List<VirtualKeyCode> GetWindowKey() { return m_winKeyUnityThread; }
+    public List<KeyboardTouch> GetTouchActiveAsCopy() { return m_touchActiveUnityThread.ToList(); }
+    public List<VirtualKeyCode> GetWindowKeyAsCopy() { return m_winKeyUnityThread.ToList(); }
 
     public float m_debugTimeInSecond = 0.1f;
     public float m_unityDeltaTime;
